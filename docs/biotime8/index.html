@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BioTime 8 — резюме: оборудование, ПО, регистрация и работа</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0f1c24;
+      --muted: #4a5d6a;
+      --line: rgba(15, 28, 36, 0.12);
+      --teal: #0d6e6e;
+      --teal-deep: #084848;
+      --sand: #e8f0f0;
+      --paper: #f4f8f8;
+      --accent: #c45c26;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(8, 40, 48, 0.12);
+      --radius: 18px;
+      --max: 920px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Manrope, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #cfe8e6 0%, transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, #d7e4ef 0%, transparent 50%),
+        linear-gradient(180deg, #eef5f5 0%, var(--paper) 28%, #e9f1f2 100%);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      padding: 2rem 0 3.5rem;
+      background:
+        linear-gradient(120deg, rgba(8, 72, 72, 0.88) 0%, rgba(15, 40, 55, 0.72) 55%, rgba(12, 55, 70, 0.55) 100%),
+        url("images/architecture.png") center / cover no-repeat;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 140px;
+      background: linear-gradient(to top, var(--paper), transparent);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      color: var(--white);
+      padding-bottom: 1rem;
+      animation: rise 0.9s ease-out both;
+    }
+    .brand {
+      font-size: clamp(2.8rem, 8vw, 5.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin: 0 0 0.75rem;
+    }
+    .brand span {
+      display: block;
+      font-size: 0.28em;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 0.6rem;
+    }
+    .lede {
+      max-width: 34rem;
+      font-size: 1.05rem;
+      opacity: 0.92;
+      margin: 0 0 1.5rem;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.75rem 1.15rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .cta:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: var(--accent);
+      color: var(--white);
+    }
+    .cta-ghost {
+      background: rgba(255,255,255,0.14);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+    }
+
+    /* —— Nav —— */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(244, 248, 248, 0.86);
+      border-bottom: 1px solid var(--line);
+    }
+    .toc-inner {
+      display: flex;
+      gap: 0.35rem;
+      overflow-x: auto;
+      padding: 0.7rem 0;
+      scrollbar-width: none;
+    }
+    .toc-inner::-webkit-scrollbar { display: none; }
+    .toc a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+    }
+    .toc a:hover { color: var(--teal-deep); background: rgba(13,110,110,0.08); }
+
+    /* —— Sections —— */
+    section {
+      padding: 3.25rem 0 1rem;
+      animation: fadein 0.7s ease both;
+    }
+    .kicker {
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin: 0 0 0.55rem;
+    }
+    h2 {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.35rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.7rem;
+      max-width: 18ch;
+    }
+    .section-lead {
+      color: var(--muted);
+      max-width: 42rem;
+      margin: 0 0 1.6rem;
+    }
+
+    .visual {
+      width: 100%;
+      border-radius: var(--radius);
+      display: block;
+      margin: 0 0 1.5rem;
+      box-shadow: var(--shadow);
+      object-fit: cover;
+      max-height: 420px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: linear-gradient(160deg, rgba(255,255,255,0.92), rgba(232,240,240,0.75));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.25rem;
+    }
+    .panel h3 {
+      margin: 0 0 0.55rem;
+      font-size: 1.05rem;
+    }
+    .panel p, .panel li { color: var(--muted); font-size: 0.95rem; }
+    .panel ul { margin: 0; padding-left: 1.1rem; }
+    .panel li + li { margin-top: 0.35rem; }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin: 0.8rem 0 0;
+    }
+    .chip {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      background: rgba(13,110,110,0.1);
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 0.85rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .steps li {
+      position: relative;
+      padding: 1rem 1rem 1rem 3.4rem;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0.9rem;
+      top: 1rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: grid;
+      place-items: center;
+    }
+    .steps strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: var(--ink);
+    }
+    .steps span { color: var(--muted); font-size: 0.92rem; }
+
+    .formula {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.55rem;
+      margin: 1rem 0 1.4rem;
+    }
+    @media (max-width: 700px) {
+      .formula { grid-template-columns: 1fr 1fr; }
+    }
+    .formula div {
+      text-align: center;
+      padding: 1rem 0.6rem;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #e7f2f2);
+      border: 1px solid var(--line);
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .formula div small {
+      display: block;
+      margin-top: 0.25rem;
+      font-weight: 500;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    table.spec {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      background: rgba(255,255,255,0.7);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .spec th, .spec td {
+      text-align: left;
+      padding: 0.75rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .spec th {
+      width: 34%;
+      color: var(--teal-deep);
+      font-weight: 700;
+      background: rgba(13,110,110,0.06);
+    }
+    .spec tr:last-child th,
+    .spec tr:last-child td { border-bottom: 0; }
+
+    .callout {
+      margin: 1.2rem 0 0;
+      padding: 1rem 1.15rem;
+      border-left: 4px solid var(--accent);
+      background: rgba(196, 92, 38, 0.08);
+      border-radius: 0 12px 12px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .callout strong { color: var(--ink); }
+
+    footer {
+      margin-top: 3rem;
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <h1 class="brand">
+        <span>ZKTeco · Учёт рабочего времени</span>
+        BioTime 8
+      </h1>
+      <p class="lede">
+        Краткое резюме системы: оборудование, веб-платформа и пошаговые процедуры
+        регистрации сотрудников и ежедневной работы.
+      </p>
+      <div class="cta-row">
+        <a class="cta cta-primary" href="#hardware">Оборудование</a>
+        <a class="cta cta-ghost" href="#software">Софт</a>
+        <a class="cta cta-ghost" href="#register">Регистрация</a>
+        <a class="cta cta-ghost" href="#work">Работа</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Содержание">
+    <div class="wrap toc-inner">
+      <a href="#overview">Обзор</a>
+      <a href="#hardware">Оборудование</a>
+      <a href="#software">ПО и модули</a>
+      <a href="#install">Установка</a>
+      <a href="#device">Подключение терминала</a>
+      <a href="#register">Регистрация</a>
+      <a href="#attendance">Графики УРВ</a>
+      <a href="#work">Ежедневная работа</a>
+      <a href="#checklist">Чек-лист</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <div class="wrap">
+        <p class="kicker">01 · Суть системы</p>
+        <h2>Частное облако для УРВ и СКУД</h2>
+        <p class="section-lead">
+          BioTime 8 (ZKBio Time / BioTA 8) — веб-серверное ПО ZKTeco для учёта рабочего времени,
+          посещаемости и (опционально) контроля доступа. Сервер ставится в локальной сети;
+          администраторы и сотрудники работают через браузер и мобильное приложение.
+        </p>
+        <img class="visual" src="images/architecture.png" alt="Архитектура BioTime 8: сервер, терминалы, браузер, мобильное приложение" />
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Что делает система</h3>
+            <ul>
+              <li>Собирает отметки с биометрических терминалов (лицо, отпечаток, карта, QR, пароль)</li>
+              <li>Считает смены, опоздания, переработки, отсутствия по правилам компании</li>
+              <li>Строит табели и отчёты, рассылает их по e-mail</li>
+              <li>Интегрируется с 1С, LDAP, IIKO, Telegram-ботом и мобильным приложением</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Масштаб</h3>
+            <ul>
+              <li>До ~500 устройств на один сервер</li>
+              <li>Тысячи сотрудников, сотни терминалов</li>
+              <li>Протокол PUSH / ADMS (Cloud Server) — терминал сам шлёт данные на сервер</li>
+            </ul>
+            <div class="chips">
+              <span class="chip">Server / Browser</span>
+              <span class="chip">PostgreSQL</span>
+              <span class="chip">Windows 64-bit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hardware">
+      <div class="wrap">
+        <p class="kicker">02 · Оборудование</p>
+        <h2>Терминалы и периферия</h2>
+        <p class="section-lead">
+          К BioTime 8 подключаются автономные терминалы ZKTeco с прошивкой Attendance PUSH (ADMS).
+          Режим устройства для УРВ — «Учёт рабочего времени», не «СКУД».
+        </p>
+        <img class="visual" src="images/hardware.png" alt="Линейка терминалов: отпечаток, лицо, USB-сканер, RFID-карта" />
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Основные серии терминалов</h3>
+            <ul>
+              <li><strong>SpeedFace</strong> — лицо (Visible Light): V4L, V5L, H5L, M-серия</li>
+              <li><strong>MB / MB-VL</strong> — лицо + отпечаток: MB360, MB460, MB560-VL</li>
+              <li><strong>uFace / Face</strong> — мультимодальные терминалы лица</li>
+              <li><strong>Silk / KF / UA / IN</strong> — отпечаток и карты</li>
+              <li><strong>Green Label / FaceKiosk / Horus</strong> — киоски и Android-устройства</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>USB-регистраторы (на ПК)</h3>
+            <ul>
+              <li>Отпечаток: ZK8500R, ZK9500, SLK20R</li>
+              <li>Ладонь: PV10R</li>
+              <li>Лицо: FA10R</li>
+            </ul>
+            <p style="margin:0.8rem 0 0">Идентификаторы: отпечаток, лицо, ладонь, RFID/MIFARE, PIN, QR-код.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Важно:</strong> терминал и сервер должны быть в одной IP-подсети.
+          По умолчанию у многих устройств IP <code>192.168.1.201</code>, порт сервера BioTime часто <code>80</code> или <code>8088</code>.
+        </div>
+      </div>
+    </section>
+
+    <section id="software">
+      <div class="wrap">
+        <p class="kicker">03 · Программное обеспечение</p>
+        <h2>Модули веб-платформы</h2>
+        <p class="section-lead">
+          После установки открывается веб-интерфейс. На панели — шесть основных модулей.
+        </p>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Персонал</h3>
+            <p>Отделы, должности, зоны, карточки сотрудников, документы, кадровые перемещения.</p>
+          </div>
+          <div class="panel">
+            <h3>Устройство</h3>
+            <p>Список терминалов, зоны, синхронизация, удалённая регистрация биометрии, журналы событий.</p>
+          </div>
+          <div class="panel">
+            <h3>Посещение</h3>
+            <p>Расписания, смены, графики, перерывы, подсчёт УРВ, отчёты, ручные корректировки.</p>
+          </div>
+          <div class="panel">
+            <h3>Доступ / Оплата / Система</h3>
+            <p>СКУД (опционально), расчёт зарплатных переменных, роли пользователей, бэкапы, SMTP, лицензия.</p>
+          </div>
+        </div>
+
+        <h3 style="margin:1.8rem 0 0.7rem;font-size:1.05rem">Системные требования</h3>
+        <table class="spec">
+          <tr><th>ОС</th><td>Windows 7/8/10 или Server 2008–2019, только 64-bit</td></tr>
+          <tr><th>CPU / RAM / диск</th><td>от 2 ГГц · от 4 ГБ ОЗУ · от 100 ГБ свободного места (NTFS)</td></tr>
+          <tr><th>БД</th><td>PostgreSQL (по умолчанию), также MSSQL, MySQL, Oracle</td></tr>
+          <tr><th>Браузеры</th><td>Chrome 33+, Firefox 27+, IE 11+ (рекомендуются Chrome / Яндекс.Браузер)</td></tr>
+          <tr><th>Архитектура</th><td>Сервер + браузер; доступ по IP:порт из локальной сети</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <p class="kicker">04 · Установка и первый вход</p>
+        <h2>От дистрибутива до суперадмина</h2>
+        <ol class="steps">
+          <li>
+            <strong>Установка</strong>
+            <span>Запуск setup.exe от имени администратора → путь → порт веб-доступа и исключение в firewall → БД (PostgreSQL или своя) → путь бэкапа → перезагрузка.</span>
+          </li>
+          <li>
+            <strong>Запуск служб</strong>
+            <span>ZKBio Time Platform / Server Controller → Start. Открыть ярлык Home Page или URL <code>http://IP:порт</code>.</span>
+          </li>
+          <li>
+            <strong>Суперадминистратор</strong>
+            <span>При первом входе создать учётную запись (логин, e-mail, пароль). Далее — роли для кадровиков и табельщиков.</span>
+          </li>
+          <li>
+            <strong>Лицензия</strong>
+            <span>«О программе» → онлайн-активация (файл SN.xml) или офлайн (UPK → License.xml). Лицензия привязана к железу сервера.</span>
+          </li>
+          <li>
+            <strong>Бэкап</strong>
+            <span>Система → База данных → включить автоматическое резервное копирование.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="device">
+      <div class="wrap">
+        <p class="kicker">05 · Подключение терминала</p>
+        <h2>Автодобавление через Cloud Server</h2>
+        <ol class="steps">
+          <li>
+            <strong>Сеть на терминале</strong>
+            <span>Меню → COMM → Ethernet: IP в той же подсети, что и сервер BioTime.</span>
+          </li>
+          <li>
+            <strong>Cloud Server (ADMS)</strong>
+            <span>COMM → Cloud Server Setting: Enable = ON, Server Address = IP сервера, Port = порт BioTime (часто 80/8088). HTTPS — только если включён на сервере.</span>
+          </li>
+          <li>
+            <strong>Режим УРВ</strong>
+            <span>Для SpeedFace и аналогов убедиться, что выбран режим учёта рабочего времени (не Access Control).</span>
+          </li>
+          <li>
+            <strong>Появление в ПО</strong>
+            <span>Устройство → список устройств: статус Online (зелёный). Если нет — добавить вручную: имя, SN, IP, зона, часовой пояс.</span>
+          </li>
+        </ol>
+        <div class="callout">
+          <strong>Зона:</strong> для работы с устройством создайте зону, отличную от зоны по умолчанию, и привяжите к ней терминал и сотрудников.
+        </div>
+      </div>
+    </section>
+
+    <section id="register">
+      <div class="wrap">
+        <p class="kicker">06 · Регистрация сотрудников</p>
+        <h2>От структуры компании до биометрии</h2>
+        <p class="section-lead">
+          Порядок сверху вниз: отделы → должности → зоны → сотрудники → идентификаторы → синхронизация на терминал.
+        </p>
+        <img class="visual" src="images/registration-flow.png" alt="Пять шагов регистрации: структура, сотрудник, биометрия, синхронизация, проверка" />
+
+        <ol class="steps">
+          <li>
+            <strong>Структура</strong>
+            <span>Персонал → Отделы / Должности / Зоны. Без корректной зоны синхронизация с терминалом не сработает.</span>
+          </li>
+          <li>
+            <strong>Карточка сотрудника</strong>
+            <span>Персонал → Сотрудник → Добавить: ID, ФИО, отдел, должность, зона, вид трудоустройства, дата найма. Аватар — отдельно от био-шаблона лица.</span>
+          </li>
+          <li>
+            <strong>Настройка устройств в карточке</strong>
+            <span>Режим проверки (что обязательно: лицо / палец / карта), права на терминале (обычно «Сотрудник», не админ), номер карты.</span>
+          </li>
+          <li>
+            <strong>Биометрия</strong>
+            <span>
+              • Через USB-сканер на ПК<br />
+              • Удалённо через сетевой терминал (команда регистрации с сервера)<br />
+              • Лицо по фото: загрузка портрета → счётчик «Кол-во лиц» +1
+            </span>
+          </li>
+          <li>
+            <strong>Синхронизация</strong>
+            <span>Выбрать сотрудников → Ещё → Синхронизировать с устройством (или синхронизация по зоне). Проверить первую отметку на терминале.</span>
+          </li>
+        </ol>
+
+        <div class="callout">
+          <strong>Практика:</strong> не назначайте рядовым сотрудникам права администратора терминала —
+          иначе меню устройства потребует биометрию админа и можно «запереть» настройку.
+        </div>
+      </div>
+    </section>
+
+    <section id="attendance">
+      <div class="wrap">
+        <p class="kicker">07 · Правила учёта</p>
+        <h2>Расписание → Смена → График → Отчёт</h2>
+        <p class="section-lead">
+          Отчёты УРВ строятся не из «сырых» проходов, а после сопоставления отметок с правилами.
+        </p>
+
+        <div class="formula">
+          <div>Расписание<small>смена дня: фикс / гибкое</small></div>
+          <div>Смена<small>цикл: день / неделя / месяц</small></div>
+          <div>График<small>кому и на какой период</small></div>
+          <div>Подсчёт<small>→ табель и отчёты</small></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Фиксированное расписание</h3>
+            <p>Жёсткие окна прихода/ухода (например 09:00–18:00). Вне окна — риск «прогула» в отчёте.</p>
+          </div>
+          <div class="panel">
+            <h3>Гибкое расписание</h3>
+            <p>Задаётся интервал дня и обязательная норма часов. Важно отработать норму, а не точное время входа.</p>
+          </div>
+        </div>
+
+        <ol class="steps" style="margin-top:1rem">
+          <li>
+            <strong>Перерывы</strong>
+            <span>Посещение → Смены → Перерывы: вычитаются из отработанного или учитываются по отметкам.</span>
+          </li>
+          <li>
+            <strong>Назначение графика</strong>
+            <span>По отделам / группам / сотрудникам на период (например месяц).</span>
+          </li>
+          <li>
+            <strong>Подсчёт</strong>
+            <span>Посещение → Подсчёт: выбрать людей и период. Рекомендуется даже при автоподсчёте — особенно «день в день».</span>
+          </li>
+          <li>
+            <strong>Отчёты</strong>
+            <span>«Операции» = факт проходов. Табели и аналитика = после подсчёта по правилам. Экспорт XLS/PDF, авторассылка SMTP.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="wrap">
+        <p class="kicker">08 · Ежедневная работа</p>
+        <h2>Как живут сотрудники и администратор</h2>
+        <img class="visual" src="images/daily-work.png" alt="День сотрудника: приход, работа, перерыв, уход, отчёт администратора" />
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Сотрудник у терминала</h3>
+            <ul>
+              <li>Утром — идентификация (лицо / палец / карта) → статус «Приход»</li>
+              <li>При необходимости — отметки перерыва</li>
+              <li>Вечером — «Уход»</li>
+              <li>Альтернативы: мобильное приложение, виртуальная проходная, QR / Telegram-бот</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Администратор / кадровик</h3>
+            <ul>
+              <li>Контроль Online-статуса терминалов</li>
+              <li>Ручные отметки, отпуска, сверхурочные</li>
+              <li>Подсчёт за период и выгрузка табеля</li>
+              <li>Кадровые перемещения и смена графиков</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <div class="wrap">
+        <p class="kicker">09 · Быстрый чек-лист запуска</p>
+        <h2>Минимум для рабочей системы</h2>
+        <ol class="steps">
+          <li><strong>Сервер</strong><span>Установлен BioTime 8, службы запущены, лицензия активна, бэкап включён.</span></li>
+          <li><strong>Сеть</strong><span>Терминалы в одной подсети, Cloud Server указывает на IP:порт сервера, режим УРВ.</span></li>
+          <li><strong>Оргструктура</strong><span>Отделы, должности, рабочие зоны созданы.</span></li>
+          <li><strong>Люди</strong><span>Сотрудники заведены, биометрия/карты зарегистрированы, синхронизированы на устройства.</span></li>
+          <li><strong>Правила</strong><span>Расписания → смены → графики назначены; выполнен пробный подсчёт и проверен отчёт.</span></li>
+          <li><strong>Эксплуатация</strong><span>SMTP/автоотчёты по желанию; интеграция с 1С при необходимости.</span></li>
+        </ol>
+
+        <div class="callout">
+          <strong>Источники:</strong> руководство пользователя BioTA / ZKBio Time 8.0 (ZKTeco),
+          материалы biotime.ru и дилерские инструкции по подключению ADMS / Cloud Server.
+          Названия пунктов меню могут чуть отличаться в локализациях BioTime / BioTA / ZKBio Time.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      BioTime 8 — резюме по оборудованию, ПО и процедурам · справочный обзор, не замена официальному мануалу
+    </div>
+  </footer>
+</body>
+</html>
