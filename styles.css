@@ -6,8 +6,8 @@
   --paper-2: #e2e8ef;
   --steel: #2f4f6b;
   --steel-deep: #1e3348;
-  --accent: #c45c26;
-  --accent-soft: #e8a078;
+  --accent: #0f7a72;
+  --accent-soft: #5ec4b8;
   --line: rgba(26, 35, 48, 0.12);
   --glow-cool: rgba(90, 140, 170, 0.35);
   --radius: 2px;
@@ -33,7 +33,7 @@ body {
   color: var(--ink);
   background:
     radial-gradient(1200px 600px at 10% -10%, rgba(47, 79, 107, 0.09), transparent 60%),
-    radial-gradient(900px 500px at 100% 20%, rgba(196, 92, 38, 0.07), transparent 55%),
+    radial-gradient(900px 500px at 100% 20%, rgba(15, 122, 114, 0.08), transparent 55%),
     linear-gradient(180deg, #f5f7fa 0%, var(--paper) 40%, #f0f3f7 100%);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -116,6 +116,7 @@ a {
   position: relative;
   min-height: min(100vh, 860px);
   display: grid;
+  grid-template-columns: 1fr;
   align-items: end;
   overflow: hidden;
   color: #f4f7fa;
@@ -132,7 +133,7 @@ a {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 55% at 70% 40%, rgba(196, 92, 38, 0.22), transparent 55%),
+    radial-gradient(ellipse 80% 55% at 70% 40%, rgba(15, 122, 114, 0.28), transparent 55%),
     radial-gradient(ellipse 60% 50% at 20% 80%, var(--glow-cool), transparent 60%),
     linear-gradient(180deg, transparent 35%, rgba(10, 16, 24, 0.78) 100%);
 }
@@ -155,10 +156,12 @@ a {
 
 .weighbridge {
   position: absolute;
+  z-index: 1;
   inset: 12% 4% 18% auto;
   width: min(58vw, 720px);
   max-width: 100%;
   right: 0;
+  pointer-events: none;
 }
 
 .wb-road {
@@ -178,7 +181,7 @@ a {
   left: 8%;
   right: 8%;
   top: 48%;
-  border-top: 2px dashed rgba(255, 220, 140, 0.45);
+  border-top: 2px dashed rgba(94, 196, 184, 0.45);
 }
 
 .wb-platform {
@@ -241,7 +244,7 @@ a {
   bottom: 18%;
   width: 68%;
   height: 58%;
-  background: linear-gradient(180deg, #c45c26, #9a3f16);
+  background: linear-gradient(180deg, #1a9a8f, #0d5f59);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -333,7 +336,7 @@ a {
   right: 20%;
   top: 30%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(232, 160, 120, 0.9), transparent);
+  background: linear-gradient(90deg, transparent, rgba(94, 196, 184, 0.95), transparent);
   animation: scanMove 3.8s ease-in-out infinite;
   opacity: 0.7;
 }
@@ -404,7 +407,7 @@ a {
 }
 
 .btn-primary:hover {
-  background: #a74a1c;
+  background: #0b5f59;
 }
 
 .btn-ghost {
@@ -668,10 +671,10 @@ a {
   }
 
   .weighbridge {
-    opacity: 0.55;
-    width: 90%;
-    inset: 8% 0 auto auto;
-    height: 42%;
+    opacity: 0.7;
+    width: min(92%, 520px);
+    inset: 6% 0 auto auto;
+    height: 38%;
   }
 
   .hero-content {
@@ -699,15 +702,32 @@ a {
   }
 
   .hero {
-    min-height: 100svh;
+    min-height: 0;
+    align-items: stretch;
+    padding-bottom: 0.5rem;
   }
 
   .weighbridge {
-    display: none;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 210px;
+    margin: 0.25rem 0 0.75rem;
+    opacity: 0.95;
   }
 
   .hero-content {
-    padding-top: 7rem;
+    padding: 5.25rem var(--space) 0.75rem;
+  }
+
+  .wb-readout {
+    top: 4%;
+    right: 4%;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .readout-value {
+    font-size: 1.05rem;
   }
 }
 
