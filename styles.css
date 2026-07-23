@@ -423,6 +423,7 @@ a {
 
 .section {
   padding: clamp(3.5rem, 8vw, 6rem) var(--space);
+  scroll-margin-top: 4.5rem;
 }
 
 .section-inner {
