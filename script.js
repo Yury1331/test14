@@ -10,8 +10,12 @@
   }
 
   const caps = document.querySelectorAll(".cap");
-  if (!caps.length || !("IntersectionObserver" in window)) {
-    caps.forEach((el) => el.classList.add("is-visible"));
+  if (!caps.length) return;
+
+  const reveal = (el) => el.classList.add("is-visible");
+
+  if (!("IntersectionObserver" in window)) {
+    caps.forEach(reveal);
     return;
   }
 
@@ -19,13 +23,17 @@
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
+          reveal(entry.target);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.2 }
+    { threshold: 0.12, rootMargin: "0px 0px 80px 0px" }
   );
 
-  caps.forEach((el) => observer.observe(el));
+  caps.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) reveal(el);
+    else observer.observe(el);
+  });
 })();
