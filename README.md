@@ -6,7 +6,7 @@
 
 ```
 test14/
-├── cameras/          # Каталоги по моделям камер
+├── cameras/          # Каталоги по моделям камер (TRASSIR, АйТек ПРО)
 ├── dialogs/          # Сводки и результаты диалогов
 └── templates/        # Шаблоны документов
 ```
@@ -16,5 +16,6 @@ test14/
 | Раздел | Описание |
 |---|---|
 | [cameras/trassir/TR-D6254/](cameras/trassir/TR-D6254/) | TRASSIR TR-D6254 4.9–156 (TREND PTZ, снята с производства) |
+| [cameras/aitek-pro/](cameras/aitek-pro/) | Аналоги АйТек ПРО: IPr-PTZ 33x 5Mp, Сокол-PTZ 33x 5Mp |
 | [dialogs/](dialogs/) | Заметки и итоги обсуждений |
 | [templates/](templates/) | Шаблоны запросов КП и других документов |

@@ -7,6 +7,6 @@
 | Файл | Содержание |
 |---|---|
 | [specs.md](specs.md) | Технические характеристики |
-| [analogs.md](analogs.md) | Сравнение с IR-моделями и актуальной заменой |
+| [analogs.md](analogs.md) | Сравнение с IR-моделями TRASSIR и аналогом АйТек ПРО |
 | [pricing-notes.md](pricing-notes.md) | Цены, скидки, сроки поставки |
 | [manufacturing.md](manufacturing.md) | Производство и комплектующие |
