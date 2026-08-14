@@ -16,6 +16,6 @@ test14/
 
 | Раздел | Описание |
 |---|---|
-| [kp/2026-08-14-neurostation-4bhnn0/](kp/2026-08-14-neurostation-4bhnn0/) | КП: 2× NeuroStation Astra 9800R/128-S + 51× камера 4BHNN0-0-0-0 |
+| [kp/2026-08-14-neurostation-4bhnn0/](kp/2026-08-14-neurostation-4bhnn0/) | КП: 2× NeuroStation Astra 9800R/128-S + 51× камера 4BHNN0-0-0-0 ([скачать Word](kp/2026-08-14-neurostation-4bhnn0/КП-2026-08-14-001_NeuroStation_Astra_9800R_4BHNN0.docx)) |
 | [cameras/trassir/NeuroStation-Astra-9800R-128-S/](cameras/trassir/NeuroStation-Astra-9800R-128-S/) | ТТХ и цены регистратора |
 | [cameras/nic-tech/4BHNN0-0-0-0/](cameras/nic-tech/4BHNN0-0-0-0/) | Разбор артикула камеры и аналоги НИЦ |
