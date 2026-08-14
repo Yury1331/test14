@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ориентировочное КП ред. 2: 2× NeuroStation + 1× 1143 + 49× 4MBIR-28-TMLW + 1× PTZ."""
+"""Ориентировочное КП ред. 3: 2× NeuroStation + аналоги камер TRASSIR со СТ-1."""
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -54,49 +54,52 @@ ITEMS_REQUEST = [
     {
         "no": 2,
         "name": (
-            "Купольная IP-камера 4 Мп НИЦ модель 1143, мотор 2.7–13.5 мм, ИК до 35 м, "
-            "IP66/IK10, ПО Nexus. Производство РФ, СТ-1 на партию"
+            "Аналог НИЦ 1143: уличный вандалостойкий купол TRASSIR 5 Мп, мотор 2.7–13.5 мм, "
+            "ИК 25 м, IP66/IK10, микрофон. Серия СТ-1 / реестр РЭП"
         ),
-        "sku": "4MP-DOM-2.7-13.5M Nexus",
+        "sku": "TR-D3153IR2 v2 (R) 2.7-13.5",
         "unit": "шт.",
         "qty": 1,
-        "price": 23800.00,
-        "note": "Спецификация НИЦ PDF; ориентир цены 4MP-DOM-2.7-13.5M; СТ-1 запросить на партию",
+        "price": 16380.00,
+        "note": "DSSL 10100, СТ-1; ориентир цены — розница (D) 16 380 ₽; (R) проектная",
     },
     {
         "no": 3,
         "name": (
-            "Уличная цилиндрическая IP-камера 4 Мп Mini Bullet, объектив 2.8 мм, "
-            "ИК + белый свет, микрофон. Производитель РУВЕР, СТ-1"
+            "Аналог 4MBIR-28-TMLW: уличный цилиндр TRASSIR 5 Мп, фикс 2.8 мм, ИК 35 м, "
+            "микрофон, IP67. Серия СТ-1 / реестр РЭП"
         ),
-        "sku": "4MBIR-28-TMLW",
+        "sku": "TR-D2151IR3 v2 (R) 2.8",
         "unit": "шт.",
         "qty": 49,
-        "price": 18500.00,
-        "note": "https://www.ipplus.ru/catalog/ip-kamery/ip-kamery-4mp/4mbir-28-tmlw ; st_1=true",
+        "price": 16800.00,
+        "note": "DSSL 16725, СТ-1; ориентир — розница v2 / (D) 16 800 ₽; Dual Light в СТ-1 5 Мп нет",
     },
     {
         "no": 4,
         "name": (
-            "PTZ уличная 2 Мп, зум ×20 (4.7–94 мм), IP66. Самая недорогая PTZ РУВЕР/Айпи Плюс "
-            "с СТ-1 в серии 2 Мп (×10 без СТ-1 не предлагаются)"
+            "Аналог PTZ: уличная поворотная TRASSIR 2 Мп, зум ×20 (4.3–86 мм), ИК 100 м, "
+            "IP66/IK10. Самая недорогая PTZ TRASSIR ×20 со СТ-1"
         ),
-        "sku": "2BPBDD-4794-20",
+        "sku": "TR-D6124IR10 v3 (R) 4.3-86",
         "unit": "шт.",
         "qty": 1,
-        "price": 92750.00,
-        "note": "https://www.ipplus.ru/catalog/ptz-kamery/ptz-kamery-2mp/2bpbdd-4794-20 ; реестр Минпромторга",
+        "price": 49770.00,
+        "note": "DSSL 90684, СТ-1; ориентир — розница v3 / (D) 49 770 ₽",
     },
 ]
 
 ITEM_ANYIP = {
     "no": 5,
-    "name": "Лицензия TRASSIR AnyIP (TRASSIR OS) — подключение 1 IP-камеры любого производителя",
-    "sku": "DSSL 57885",
+    "name": (
+        "Лицензия TRASSIR AnyIP (Astra Linux) — подключение 1 IP-камеры "
+        "к NeuroStation Astra / UltraStation Astra"
+    ),
+    "sku": "DSSL 95887",
     "unit": "шт.",
     "qty": 51,
     "price": 5090.00,
-    "note": "Цена DSSL с 01.04.2026; без лицензии камера к NVR не подключается",
+    "note": "Для Astra Linux; цена ориентир AnyIP OS 57885. Подарок на камере — уточнить у DSSL",
 }
 
 ITEM_HDD = {
@@ -229,8 +232,8 @@ def build_kp_sheet(ws):
 
     ws.merge_cells("A2:I2")
     ws["A2"] = (
-        f"№ {KP_NO} ред. 2 от {DATE}  ·  2× NVR TRASSIR + 1× НИЦ 1143 + 49× 4MBIR-28-TMLW + 1× PTZ  "
-        f"·  все камеры со СТ-1  ·  цены с НДС 22%"
+        f"№ {KP_NO} ред. 3 от {DATE}  ·  2× NVR TRASSIR + 51× камеры TRASSIR СТ-1  "
+        f"·  1× TR-D3153IR2 + 49× TR-D2151IR3 + 1× PTZ TR-D6124IR10  ·  цены с НДС 22%"
     )
     ws["A2"].font = Font(name="Calibri", size=10, italic=True, color=WHITE)
     ws["A2"].fill = PatternFill("solid", fgColor=NAVY2)
@@ -242,9 +245,9 @@ def build_kp_sheet(ws):
     meta = [
         ("Заказчик", "______________________________"),
         ("ИНН / КПП заказчика", "______________________________"),
-        ("Поставщик", "к заполнению (DSSL / TRASSIR, НИЦ «Технологии», ООО «Айпи Плюс» / РУВЕР)"),
+        ("Поставщик", "к заполнению (DSSL / авторизованный дилер TRASSIR)"),
         ("Срок действия цен", VALID_UNTIL),
-        ("Срок поставки", "NVR: 5–15 раб. дней при наличии; камеры НИЦ и РУВЕР — под заказ"),
+        ("Срок поставки", "NVR: 5–15 раб. дней при наличии; камеры СТ-1 — проектная поставка"),
         ("Условия оплаты", "по договору (типовой ориентир: 100% предоплата или 70/30)"),
     ]
     r = 4
@@ -292,7 +295,7 @@ def build_kp_sheet(ws):
     ws.merge_cells("A19:I19")
     ws["A19"] = (
         "2. Обязательно к поставке для работоспособности "
-        "(в регистраторе нет лицензий на IP-камеры; камеры НИЦ/РУВЕР не native TRASSIR)"
+        "(в регистраторе Astra нет лицензий на IP-камеры; AnyIP Astra Linux — DSSL 95887)"
     )
     ws["A19"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
     ws["A19"].fill = PatternFill("solid", fgColor=NAVY)
@@ -342,7 +345,7 @@ def build_kp_sheet(ws):
         ws.cell(32, col).border = THIN
 
     packs = [
-        ("А. Только запрошенные позиции", "2 NVR + 1 купол + 49 цилиндр + 1 PTZ", request_sum, LIGHT),
+        ("А. Только запрошенные позиции", "2 NVR + 1 купол + 49 цилиндр + 1 PTZ TRASSIR", request_sum, LIGHT),
         ("Б. Работоспособный минимум", "А + 51× AnyIP", work_sum, GOLD),
         ("В. С архивом 30 суток", "Б + 8× HDD 10 ТБ", archive_sum, GREEN),
         ("Г. Полный комплект", "В + Neuro Detector на все камеры", full_sum, ORANGE),
@@ -365,13 +368,14 @@ def build_kp_sheet(ws):
 
     notes = [
         "5. Условия и оговорки",
-        "• Документ — ориентировочный расчёт по открытым ценам на 14.08.2026, ред. 2. Не оферта. Фиксация — в КП DSSL, НИЦ и ООО «Айпи Плюс».",
-        "• Все камеры поставляются со СТ-1 (и/или номером реестровой записи РЭП). 4MBIR-28-TMLW и 2BPBDD-4794-20: флаг СТ-1 в каталоге IP Plus.",
-        "• PTZ: взята самая недорогая модель РУВЕР 2 Мп с СТ-1 — 2BPBDD-4794-20 (зум ×20). Модели ×10 в каталоге без СТ-1 не включены.",
-        "• Регистратор без HDD и без лицензий AnyIP. В каждом NVR — 2 лицензии Neuro Detector.",
+        "• Документ — ориентировочный расчёт по открытым ценам на 14.08.2026, ред. 3. Не оферта. Фиксация — в КП DSSL / дилера TRASSIR.",
+        "• Всё оборудование — DSSL/TRASSIR. Камеры — исполнения (R) со СТ-1 и записью в РЭП (ПП РФ №878).",
+        "• Подбор: НИЦ 1143 → TR-D3153IR2 v2 (R); 4MBIR-28-TMLW → TR-D2151IR3 v2 (R); PTZ → TR-D6124IR10 v3 (R) ×20.",
+        "• В линейке СТ-1 нет 4 Мп: взяты ближайшие 5 Мп. Dual Light (ИК+белый) в СТ-1 5 Мп нет — у цилиндра только ИК.",
+        "• Регистратор без HDD. Лицензии AnyIP (Astra Linux, 95887) в NVR нет; «ПО в подарок» на камере — уточнить для Astra.",
         "• Оценка архива: 51 камера, H.265, 3 Мбит/с ≈ 1,65 ТБ/сутки; 8×10 ТБ ≈ 30 суток на одном NVR.",
         "• Не включено: PoE-коммутаторы, СКС, шкаф 19\", ИБП, мониторы, монтаж, ПНР, доставка.",
-        "• Контакты: DSSL 8 (800) 100-91-12; НИЦ 8 (800) 555-47-65; Айпи Плюс 8 804 333-73-02, info@ipplus.ru.",
+        "• Контакты: DSSL 8 (800) 100-91-12, dssl.ru; коды: NVR 80222, купол 10100, цилиндр 16725, PTZ 90684, AnyIP Astra 95887.",
     ]
     ws.merge_cells("A38:I38")
     ws["A38"] = notes[0]
@@ -456,28 +460,28 @@ def build_sources_sheet(ws):
             "https://www.dssl.ru/products/trassir-neurostation-98128r-s-ip-videoregistrator/",
         ),
         (
-            "Купол НИЦ 1143 4MP-DOM-2.7-13.5M Nexus",
-            "4MP-DOM-2.7-13.5M",
-            23800,
-            "https://www.nic-tech.ru/upload/iblock/094/ — спецификация модель 1143",
+            "Купол TRASSIR СТ-1 5 Мп мотор 2.7–13.5 (аналог 1143)",
+            "TR-D3153IR2 v2 (R) 2.7-13.5",
+            16380,
+            "https://www.dssl.ru/products/tr-d3153ir2-v2-r-2-7-13-5-ip-kamera/ — ориентир (D) 16 380 ₽",
         ),
         (
-            "Цилиндр РУВЕР 4 Мп Mini Bullet СТ-1",
-            "4MBIR-28-TMLW",
-            18500,
-            "https://www.ipplus.ru/catalog/ip-kamery/ip-kamery-4mp/4mbir-28-tmlw (цена на сайте не опубликована)",
+            "Цилиндр TRASSIR СТ-1 5 Мп 2.8 мм (аналог 4MBIR)",
+            "TR-D2151IR3 v2 (R) 2.8",
+            16800,
+            "https://www.dssl.ru/products/tr-d2151ir3-v2-r-2-8-ip-kamera/ — ориентир v2 16 800 ₽",
         ),
         (
-            "PTZ РУВЕР 2 Мп ×20 СТ-1 (самая недорогая с СТ-1)",
-            "2BPBDD-4794-20",
-            92750,
-            "https://www.ipplus.ru/catalog/ptz-kamery/ptz-kamery-2mp/2bpbdd-4794-20 ; ориентир класса PTZ20-20x",
+            "PTZ TRASSIR СТ-1 2 Мп ×20 (самая недорогая ×20)",
+            "TR-D6124IR10 v3 (R) 4.3-86",
+            49770,
+            "https://www.dssl.ru/products/tr-d6124ir10-v3-r-4-3-86-ip-kamera/ — ориентир v3 49 770 ₽",
         ),
         (
-            "TRASSIR AnyIP",
-            "57885",
+            "TRASSIR AnyIP (Astra Linux)",
+            "95887",
             5090,
-            "https://www.dssl.ru/products/trassir-anyip/",
+            "https://www.dssl.ru/products/litsenziya-trassir-anyip-astra-linux/ (проектная; ориентир AnyIP OS 57885)",
         ),
         (
             "TRASSIR Neuro Detector",

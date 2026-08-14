@@ -16,8 +16,8 @@ test14/
 
 | Раздел | Описание |
 |---|---|
-| [kp/2026-08-14-neurostation-4bhnn0/](kp/2026-08-14-neurostation-4bhnn0/) | КП ред. 2: 2× NeuroStation Astra 9800R/128-S + 1× НИЦ 1143 + 49× 4MBIR-28-TMLW + 1× PTZ 2BPBDD-4794-20 ([Word](kp/2026-08-14-neurostation-4bhnn0/КП-2026-08-14-001_NeuroStation_Astra_9800R_4BHNN0.docx), [Excel](kp/2026-08-14-neurostation-4bhnn0/КП_поставка_NeuroStation_Astra_9800R_4BHNN0.xlsx)) |
+| [kp/2026-08-14-neurostation-4bhnn0/](kp/2026-08-14-neurostation-4bhnn0/) | КП ред. 3: 2× NeuroStation Astra 9800R/128-S + 51× камеры TRASSIR СТ-1 ([Word](kp/2026-08-14-neurostation-4bhnn0/КП-2026-08-14-001_NeuroStation_Astra_9800R_4BHNN0.docx), [Excel](kp/2026-08-14-neurostation-4bhnn0/КП_поставка_NeuroStation_Astra_9800R_4BHNN0.xlsx)) |
 | [cameras/trassir/NeuroStation-Astra-9800R-128-S/](cameras/trassir/NeuroStation-Astra-9800R-128-S/) | ТТХ и цены регистратора |
-| [cameras/nic-tech/1143-4MP-DOM-2.7-13.5M-Nexus/](cameras/nic-tech/1143-4MP-DOM-2.7-13.5M-Nexus/) | Купол НИЦ модель 1143 |
-| [cameras/ruware/4MBIR-28-TMLW/](cameras/ruware/4MBIR-28-TMLW/) | Цилиндр РУВЕР 4 Мп со СТ-1 |
-| [cameras/ruware/2BPBDD-4794-20/](cameras/ruware/2BPBDD-4794-20/) | PTZ РУВЕР 2 Мп ×20 со СТ-1 |
+| [cameras/trassir/TR-D3153IR2-v2-R/](cameras/trassir/TR-D3153IR2-v2-R/) | Купол СТ-1, аналог НИЦ 1143 |
+| [cameras/trassir/TR-D2151IR3-v2-R/](cameras/trassir/TR-D2151IR3-v2-R/) | Цилиндр СТ-1, аналог 4MBIR-28-TMLW |
+| [cameras/trassir/TR-D6124IR10-v3-R/](cameras/trassir/TR-D6124IR10-v3-R/) | PTZ СТ-1 ×20 |
