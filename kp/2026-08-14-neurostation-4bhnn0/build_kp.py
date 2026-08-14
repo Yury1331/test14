@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ориентировочное КП ред. 3: 2× NeuroStation + аналоги камер TRASSIR со СТ-1."""
+"""Ориентировочное КП ред. 4: две заявки ЭТП ГПБ 44-ФЗ (NVR + 4BHNN0)."""
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -8,7 +8,7 @@ from openpyxl.worksheet.page import PageMargins
 
 VAT_RATE = 0.22
 DATE = "14.08.2026"
-VALID_UNTIL = "28.08.2026"
+VALID_UNTIL = "18.08.2026, 00:00 МСК"
 KP_NO = "КП-2026-08-14-001"
 
 NAVY = "1F4E79"
@@ -37,57 +37,45 @@ def net_from_gross(gross: float) -> float:
     return round(gross - vat_from_gross(gross), 2)
 
 
-ITEMS_REQUEST = [
-    {
-        "no": 1,
-        "name": (
-            "IP-видеорегистратор TRASSIR NeuroStation Astra 9800R/128-S, "
-            "128 каналов, Astra Linux SE «Смоленск», 8×HDD 3.5\" (диски не входят), "
-            "2 лицензии Neuro Detector в комплекте. СТ-1 / реестры ПП №719 и №878"
-        ),
-        "sku": "NeuroStation 9800R/128-S",
-        "unit": "шт.",
-        "qty": 2,
-        "price": 477740.00,
-        "note": "Открытая розница trasrussia.ru; у DSSL — проектная цена",
-    },
-    {
-        "no": 2,
-        "name": (
-            "Аналог НИЦ 1143: уличный вандалостойкий купол TRASSIR 5 Мп, мотор 2.7–13.5 мм, "
-            "ИК 25 м, IP66/IK10, микрофон. Серия СТ-1 / реестр РЭП"
-        ),
-        "sku": "TR-D3153IR2 v2 (R) 2.7-13.5",
-        "unit": "шт.",
-        "qty": 1,
-        "price": 16380.00,
-        "note": "DSSL 10100, СТ-1; ориентир цены — розница (D) 16 380 ₽; (R) проектная",
-    },
-    {
-        "no": 3,
-        "name": (
-            "Аналог 4MBIR-28-TMLW: уличный цилиндр TRASSIR 5 Мп, фикс 2.8 мм, ИК 35 м, "
-            "микрофон, IP67. Серия СТ-1 / реестр РЭП"
-        ),
-        "sku": "TR-D2151IR3 v2 (R) 2.8",
-        "unit": "шт.",
-        "qty": 49,
-        "price": 16800.00,
-        "note": "DSSL 16725, СТ-1; ориентир — розница v2 / (D) 16 800 ₽; Dual Light в СТ-1 5 Мп нет",
-    },
-    {
-        "no": 4,
-        "name": (
-            "Аналог PTZ: уличная поворотная TRASSIR 2 Мп, зум ×20 (4.3–86 мм), ИК 100 м, "
-            "IP66/IK10. Самая недорогая PTZ TRASSIR ×20 со СТ-1"
-        ),
-        "sku": "TR-D6124IR10 v3 (R) 4.3-86",
-        "unit": "шт.",
-        "qty": 1,
-        "price": 49770.00,
-        "note": "DSSL 90684, СТ-1; ориентир — розница v3 / (D) 49 770 ₽",
-    },
-]
+ITEM_NVR = {
+    "no": 1,
+    "name": (
+        "IP-видеорегистратор TRASSIR NeuroStation Astra 9800R/128-S, "
+        "128 каналов, Astra Linux SE «Смоленск», 8×HDD 3.5\" (диски не входят), "
+        "2 лицензии Neuro Detector. СТ-1 / реестры ПП №719 и №878"
+    ),
+    "sku": "NeuroStation 9800R/128-S",
+    "unit": "шт.",
+    "qty": 2,
+    "price": 477740.00,
+    "note": "Заявка 254364 / № ЭТП 998818; розница trasrussia.ru; у DSSL проектная",
+}
+
+ITEM_CAM = {
+    "no": 1,
+    "name": (
+        "Камера видеонаблюдения цифровая. Предмет извещения — артикул 4BHNN0-0-0-0, "
+        "51 шт. одной позиции (эквивалент — только если допущен документацией)"
+    ),
+    "sku": "4BHNN0-0-0-0",
+    "unit": "шт.",
+    "qty": 51,
+    "price": 22000.00,
+    "note": "Заявка 254397 / № ЭТП 998881; артикул в открытых каталогах не найден; ориентир 4 Мп",
+}
+
+ITEM_EQUIV = {
+    "no": "Э1",
+    "name": (
+        "Эквивалент (не подавать, если документация не допускает замену): "
+        "цилиндр TRASSIR 5 Мп, 2.8 мм, ИК 35 м, микрофон, СТ-1"
+    ),
+    "sku": "TR-D2151IR3 v2 (R) 2.8",
+    "unit": "шт.",
+    "qty": 51,
+    "price": 16800.00,
+    "note": "Только при допуске эквивалента; 51 одинаковых, не 1+49+1",
+}
 
 ITEM_ANYIP = {
     "no": 5,
@@ -206,6 +194,16 @@ def totals_block(ws, start_row, label, gross, fill):
     return net, vat
 
 
+def section_bar(ws, row, text):
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=9)
+    ws.cell(row, 1, text).font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    for col in range(1, 10):
+        ws.cell(row, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(row, col).border = THIN
+        ws.cell(row, col).font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    ws.row_dimensions[row].height = 20
+
+
 def build_kp_sheet(ws):
     ws.sheet_view.showGridLines = False
     ws.page_setup.orientation = "landscape"
@@ -214,7 +212,7 @@ def build_kp_sheet(ws):
     ws.page_setup.fitToHeight = 1
     ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_margins = PageMargins(left=0.4, right=0.4, top=0.5, bottom=0.5)
-    ws.print_title_rows = "1:8"
+    ws.print_title_rows = "1:3"
 
     widths = {1: 6, 2: 52, 3: 26, 4: 8, 5: 10, 6: 16, 7: 16, 8: 14, 9: 42}
     for col, width in widths.items():
@@ -232,23 +230,25 @@ def build_kp_sheet(ws):
 
     ws.merge_cells("A2:I2")
     ws["A2"] = (
-        f"№ {KP_NO} ред. 3 от {DATE}  ·  2× NVR TRASSIR + 51× камеры TRASSIR СТ-1  "
-        f"·  1× TR-D3153IR2 + 49× TR-D2151IR3 + 1× PTZ TR-D6124IR10  ·  цены с НДС 22%"
+        f"№ {KP_NO} ред. 4 от {DATE}  ·  44-ФЗ, ЭТП ГПБ «Торговый портал», ценовой запрос  "
+        f"·  две отдельные заявки  ·  подача до {VALID_UNTIL}  ·  цены с НДС 22%"
     )
     ws["A2"].font = Font(name="Calibri", size=10, italic=True, color=WHITE)
     ws["A2"].fill = PatternFill("solid", fgColor=NAVY2)
-    ws["A2"].alignment = Alignment(horizontal="center", vertical="center")
+    ws["A2"].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
     for col in range(1, 10):
         ws.cell(2, col).fill = PatternFill("solid", fgColor=NAVY2)
-    ws.row_dimensions[2].height = 18
+    ws.row_dimensions[2].height = 22
 
     meta = [
-        ("Заказчик", "______________________________"),
-        ("ИНН / КПП заказчика", "______________________________"),
+        ("Заказчик", "ФГКУ «Донской спасательный центр МЧС России»"),
+        ("ИНН / КПП / ОГРН", "6102006605 / 610201001 / 1026100666525"),
+        ("Адрес поставки", "346709, Ростовская обл., Аксайский р-н, п. Ковалевка, ул. Салютная, д. 2"),
+        ("Контакт заказчика", "Пахомов И.В., donsc@dsc.61.mchs.gov.ru, +7 (86350) 2-71-98"),
         ("Поставщик", "к заполнению (DSSL / авторизованный дилер TRASSIR)"),
-        ("Срок действия цен", VALID_UNTIL),
-        ("Срок поставки", "NVR: 5–15 раб. дней при наличии; камеры СТ-1 — проектная поставка"),
-        ("Условия оплаты", "по договору (типовой ориентир: 100% предоплата или 70/30)"),
+        ("Срок подачи на ЭТП", VALID_UNTIL),
+        ("НМЦ", "не указана"),
+        ("Оплата", "по 44-ФЗ и условиям контракта казённого учреждения"),
     ]
     r = 4
     for label, value in meta:
@@ -262,14 +262,6 @@ def build_kp_sheet(ws):
         b.font = Font(name="Calibri", size=10)
         r += 1
 
-    ws.merge_cells("A11:I11")
-    ws["A11"] = "1. Спецификация по запросу заказчика"
-    ws["A11"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A11"].fill = PatternFill("solid", fgColor=NAVY)
-    for col in range(1, 10):
-        ws.cell(11, col).fill = PatternFill("solid", fgColor=NAVY)
-    ws.row_dimensions[11].height = 20
-
     headers = [
         "№",
         "Наименование",
@@ -281,84 +273,74 @@ def build_kp_sheet(ws):
         "в т.ч. НДС 22%, ₽",
         "Примечание",
     ]
-    for col, h in enumerate(headers, 1):
-        header_cell(ws, 12, col, h)
-    ws.row_dimensions[12].height = 28
 
-    request_items = [enrich(x) for x in ITEMS_REQUEST]
-    fills = [GRAY, WHITE, GRAY, WHITE]
-    for i, item in enumerate(request_items):
-        write_item_row(ws, 13 + i, item, fills[i])
-    request_sum = money(sum(x["sum"] for x in request_items))
-    totals_block(ws, 17, "Итого по запросу (позиции 1–4), камеры 51 шт. со СТ-1", request_sum, NAVY)
-
-    ws.merge_cells("A19:I19")
-    ws["A19"] = (
-        "2. Обязательно к поставке для работоспособности "
-        "(в регистраторе Astra нет лицензий на IP-камеры; AnyIP Astra Linux — DSSL 95887)"
-    )
-    ws["A19"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A19"].fill = PatternFill("solid", fgColor=NAVY)
-    for col in range(1, 10):
-        ws.cell(19, col).fill = PatternFill("solid", fgColor=NAVY)
-    ws.row_dimensions[19].height = 20
-
-    for col, h in enumerate(headers, 1):
-        header_cell(ws, 20, col, h)
+    nvr = enrich(ITEM_NVR)
+    cam = enrich(ITEM_CAM)
+    equiv = enrich(ITEM_EQUIV)
     anyip = enrich(ITEM_ANYIP)
-    write_item_row(ws, 21, anyip, GOLD)
-    work_sum = money(request_sum + anyip["sum"])
-    totals_block(ws, 22, "Итого работоспособный минимум (позиции 1–5)", work_sum, "375623")
-
-    ws.merge_cells("A24:I24")
-    ws["A24"] = "3. Рекомендуемые опции (в исходном запросе отсутствуют)"
-    ws["A24"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A24"].fill = PatternFill("solid", fgColor=NAVY)
-    for col in range(1, 10):
-        ws.cell(24, col).fill = PatternFill("solid", fgColor=NAVY)
-
-    for col, h in enumerate(headers, 1):
-        header_cell(ws, 25, col, h)
     hdd = enrich(ITEM_HDD)
     nd = enrich(ITEM_ND)
-    write_item_row(ws, 26, hdd, GREEN)
-    write_item_row(ws, 27, nd, ORANGE)
-
+    nvr_sum = nvr["sum"]
+    cam_sum = cam["sum"]
+    both_sum = money(nvr_sum + cam_sum)
+    work_sum = money(both_sum + anyip["sum"])
     archive_sum = money(work_sum + hdd["sum"])
     full_sum = money(archive_sum + nd["sum"])
-    totals_block(ws, 28, "Итого с архивом ~30 суток (позиции 1–6)", archive_sum, "548235")
-    totals_block(ws, 29, "Итого полный комплект с аналитикой (позиции 1–7)", full_sum, NAVY)
 
-    ws.merge_cells("A31:I31")
-    ws["A31"] = "4. Сводка комплектов"
-    ws["A31"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A31"].fill = PatternFill("solid", fgColor=NAVY)
-    for col in range(1, 10):
-        ws.cell(31, col).fill = PatternFill("solid", fgColor=NAVY)
+    section_bar(ws, 13, "А. Заявка 254364  ·  № ЭТП 998818  ·  NeuroStation Astra 9800R/128-S, 2 шт.")
+    for col, h in enumerate(headers, 1):
+        header_cell(ws, 14, col, h)
+    write_item_row(ws, 15, nvr, GRAY)
+    totals_block(ws, 16, "Итого по заявке 254364 (подавать отдельно)", nvr_sum, NAVY)
 
+    section_bar(ws, 18, "Б. Заявка 254397  ·  № ЭТП 998881  ·  камера 4BHNN0-0-0-0, 51 шт.")
+    for col, h in enumerate(headers, 1):
+        header_cell(ws, 19, col, h)
+    write_item_row(ws, 20, cam, WHITE)
+    totals_block(ws, 21, "Итого по заявке 254397 (подавать отдельно)", cam_sum, NAVY)
+
+    section_bar(ws, 23, "Справочно: сумма двух заявок (не объединять на ЭТП)")
+    totals_block(ws, 24, "254364 + 254397", both_sum, "375623")
+
+    section_bar(ws, 26, "Эквивалент камер — НЕ подавать, если документация не допускает замену")
+    for col, h in enumerate(headers, 1):
+        header_cell(ws, 27, col, h)
+    write_item_row(ws, 28, equiv, GOLD)
+    totals_block(ws, 29, "51× TR-D2151IR3 v2 (R) 2.8 (только при допуске эквивалента)", equiv["sum"], "C65911")
+
+    section_bar(ws, 31, "В. Не входит в извещения (AnyIP, HDD — отдельная закупка / уточнение ТЗ)")
+    for col, h in enumerate(headers, 1):
+        header_cell(ws, 32, col, h)
+    write_item_row(ws, 33, anyip, GOLD)
+    write_item_row(ws, 34, hdd, GREEN)
+    write_item_row(ws, 35, nd, ORANGE)
+
+    section_bar(ws, 37, "Сводка (справочно)")
     summary_headers = ["Комплект", "Состав", "Сумма с НДС, ₽", "в т.ч. НДС 22%, ₽", "Без НДС, ₽"]
     for col, h in enumerate(summary_headers, 1):
-        header_cell(ws, 32, col, h)
-    ws.merge_cells("E32:I32")
+        header_cell(ws, 38, col, h)
+    ws.merge_cells("E38:I38")
     for col in range(5, 10):
-        ws.cell(32, col).fill = PatternFill("solid", fgColor=NAVY)
-        ws.cell(32, col).border = THIN
+        ws.cell(38, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(38, col).border = THIN
 
     packs = [
-        ("А. Только запрошенные позиции", "2 NVR + 1 купол + 49 цилиндр + 1 PTZ TRASSIR", request_sum, LIGHT),
-        ("Б. Работоспособный минимум", "А + 51× AnyIP", work_sum, GOLD),
-        ("В. С архивом 30 суток", "Б + 8× HDD 10 ТБ", archive_sum, GREEN),
-        ("Г. Полный комплект", "В + Neuro Detector на все камеры", full_sum, ORANGE),
+        ("Заявка 254364", "2× NeuroStation", nvr_sum, LIGHT),
+        ("Заявка 254397", "51× 4BHNN0-0-0-0", cam_sum, LIGHT),
+        ("Обе заявки", "NVR + камеры по извещениям", both_sum, GOLD),
+        ("+ AnyIP Astra", "чтобы NVR писал камеры", work_sum, GREEN),
+        ("+ HDD 10 ТБ ×8", "~30 суток архива", archive_sum, ORANGE),
+        ("+ Neuro Detector", "аналитика на 51 канал", full_sum, GRAY),
     ]
     for i, (name, composition, gross, fill) in enumerate(packs):
-        row = 33 + i
+        row = 39 + i
         ws.merge_cells(start_row=row, start_column=5, end_row=row, end_column=9)
         ws.cell(row, 1, name).font = Font(name="Calibri", size=10, bold=True)
         ws.cell(row, 2, composition).font = Font(name="Calibri", size=10)
         for col, val in ((3, gross), (4, vat_from_gross(gross)), (5, net_from_gross(gross))):
             c = ws.cell(row, col, val)
             c.number_format = '#,##0.00'
-            c.font = Font(name="Calibri", size=10, bold=(i == 1))
+            c.font = Font(name="Calibri", size=10, bold=(i == 2))
             c.alignment = Alignment(horizontal="right", vertical="center")
         for col in range(1, 10):
             ws.cell(row, col).fill = PatternFill("solid", fgColor=fill)
@@ -367,61 +349,57 @@ def build_kp_sheet(ws):
         ws.row_dimensions[row].height = 20
 
     notes = [
-        "5. Условия и оговорки",
-        "• Документ — ориентировочный расчёт по открытым ценам на 14.08.2026, ред. 3. Не оферта. Фиксация — в КП DSSL / дилера TRASSIR.",
-        "• Всё оборудование — DSSL/TRASSIR. Камеры — исполнения (R) со СТ-1 и записью в РЭП (ПП РФ №878).",
-        "• Подбор: НИЦ 1143 → TR-D3153IR2 v2 (R); 4MBIR-28-TMLW → TR-D2151IR3 v2 (R); PTZ → TR-D6124IR10 v3 (R) ×20.",
-        "• В линейке СТ-1 нет 4 Мп: взяты ближайшие 5 Мп. Dual Light (ИК+белый) в СТ-1 5 Мп нет — у цилиндра только ИК.",
-        "• Регистратор без HDD. Лицензии AnyIP (Astra Linux, 95887) в NVR нет; «ПО в подарок» на камере — уточнить для Astra.",
-        "• Оценка архива: 51 камера, H.265, 3 Мбит/с ≈ 1,65 ТБ/сутки; 8×10 ТБ ≈ 30 суток на одном NVR.",
-        "• Не включено: PoE-коммутаторы, СКС, шкаф 19\", ИБП, мониторы, монтаж, ПНР, доставка.",
-        "• Контакты: DSSL 8 (800) 100-91-12, dssl.ru; коды: NVR 80222, купол 10100, цилиндр 16725, PTZ 90684, AnyIP Astra 95887.",
+        "Условия и оговорки (44-ФЗ)",
+        "• Две независимые процедуры. На ЭТП ГПБ подавать две заявки до 18.08.2026, 00:00 МСК. НМЦ не указана.",
+        "• Предмет камер — 51× 4BHNN0-0-0-0. Смесь 1 купол + 49 цилиндр + 1 PTZ предмету заявки не соответствует.",
+        "• Эквивалент TRASSIR — только если документация прямо допускает. Иначе заявка может быть отклонена.",
+        "• Артикул 4BHNN0 в открытых каталогах не найден; 22 000 ₽ — ориентир. Подтвердить у DSSL/НИЦ до подачи.",
+        "• NVR без HDD и без лицензий AnyIP (Astra Linux, 95887). В извещениях этого нет — система «из коробки» не запишет 51 камеру.",
+        "• Оплата — по 44-ФЗ / контракту ФГКУ, не коммерческая схема 70/30.",
+        "• Поставка: п. Ковалевка, ул. Салютная, 2. Срок — по документации процедуры.",
+        "• Контакты: заказчик Пахомов И.В. donsc@dsc.61.mchs.gov.ru; DSSL 8 (800) 100-91-12, код NVR 80222.",
     ]
-    ws.merge_cells("A38:I38")
-    ws["A38"] = notes[0]
-    ws["A38"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A38"].fill = PatternFill("solid", fgColor=NAVY)
-    for col in range(1, 10):
-        ws.cell(38, col).fill = PatternFill("solid", fgColor=NAVY)
-
-    for i, text in enumerate(notes[1:], 39):
+    section_bar(ws, 46, notes[0])
+    for i, text in enumerate(notes[1:], 47):
         ws.merge_cells(start_row=i, start_column=1, end_row=i, end_column=9)
         cell = ws.cell(i, 1, text)
-        cell.font = Font(name="Calibri", size=9, color=RED_NOTE if i in (40, 41) else "000000")
+        cell.font = Font(name="Calibri", size=9, color=RED_NOTE if i in (47, 48, 49, 51) else "000000")
         cell.alignment = Alignment(wrap_text=True, vertical="center")
         ws.row_dimensions[i].height = 18
 
-    ws.merge_cells("A48:D48")
-    ws["A48"] = "Поставщик / исполнитель"
-    ws["A48"].font = Font(name="Calibri", size=10, bold=True)
-    ws.merge_cells("F48:I48")
-    ws["F48"] = "Заказчик"
-    ws["F48"].font = Font(name="Calibri", size=10, bold=True)
-    ws.merge_cells("A50:D50")
-    ws["A50"] = "________________ / ________________"
-    ws.merge_cells("F50:I50")
-    ws["F50"] = "________________ / ________________"
-    ws.merge_cells("A51:D51")
-    ws["A51"] = "подпись, ФИО, дата"
-    ws["A51"].font = Font(name="Calibri", size=8, italic=True, color="808080")
-    ws.merge_cells("F51:I51")
-    ws["F51"] = "подпись, ФИО, дата"
-    ws["F51"].font = Font(name="Calibri", size=8, italic=True, color="808080")
+    ws.merge_cells("A56:D56")
+    ws["A56"] = "Поставщик / участник закупки"
+    ws["A56"].font = Font(name="Calibri", size=10, bold=True)
+    ws.merge_cells("F56:I56")
+    ws["F56"] = "Заказчик"
+    ws["F56"].font = Font(name="Calibri", size=10, bold=True)
+    ws.merge_cells("A58:D58")
+    ws["A58"] = "________________ / ________________"
+    ws.merge_cells("F58:I58")
+    ws["F58"] = "________________ / ________________"
+    ws.merge_cells("A59:D59")
+    ws["A59"] = "подпись, ФИО, дата"
+    ws["A59"].font = Font(name="Calibri", size=8, italic=True, color="808080")
+    ws.merge_cells("F59:I59")
+    ws["F59"] = "подпись, ФИО, дата"
+    ws["F59"].font = Font(name="Calibri", size=8, italic=True, color="808080")
 
-    ws.auto_filter.ref = "A12:I16"
     ws.freeze_panes = "A13"
-    ws.print_area = "A1:I51"
-    ws.oddHeader.left.text = f"КП {KP_NO}"
-    ws.oddFooter.center.text = "Страница &P из &N · ориентировочный расчёт · цены с НДС 22%"
+    ws.print_area = "A1:I59"
+    ws.oddHeader.left.text = f"КП {KP_NO} ред. 4"
+    ws.oddFooter.center.text = "Страница &P из &N · две заявки ЭТП ГПБ · цены с НДС 22%"
 
     return {
-        "request": request_sum,
+        "nvr": nvr_sum,
+        "cam": cam_sum,
+        "both": both_sum,
+        "equiv": equiv["sum"],
         "work": work_sum,
         "archive": archive_sum,
         "full": full_sum,
-        "request_vat": vat_from_gross(request_sum),
-        "request_net": net_from_gross(request_sum),
-        "work_vat": vat_from_gross(work_sum),
+        "nvr_vat": vat_from_gross(nvr_sum),
+        "cam_vat": vat_from_gross(cam_sum),
+        "both_vat": vat_from_gross(both_sum),
         "anyip": anyip["sum"],
         "hdd": hdd["sum"],
         "nd": nd["sum"],
@@ -460,22 +438,16 @@ def build_sources_sheet(ws):
             "https://www.dssl.ru/products/trassir-neurostation-98128r-s-ip-videoregistrator/",
         ),
         (
-            "Купол TRASSIR СТ-1 5 Мп мотор 2.7–13.5 (аналог 1143)",
-            "TR-D3153IR2 v2 (R) 2.7-13.5",
-            16380,
-            "https://www.dssl.ru/products/tr-d3153ir2-v2-r-2-7-13-5-ip-kamera/ — ориентир (D) 16 380 ₽",
+            "Камера по извещению 254397",
+            "4BHNN0-0-0-0",
+            22000,
+            "артикул в открытых каталогах не найден; ориентир опта 4 Мп НИЦ/Nexus",
         ),
         (
-            "Цилиндр TRASSIR СТ-1 5 Мп 2.8 мм (аналог 4MBIR)",
+            "Эквивалент TRASSIR СТ-1 (не подавать без допуска)",
             "TR-D2151IR3 v2 (R) 2.8",
             16800,
-            "https://www.dssl.ru/products/tr-d2151ir3-v2-r-2-8-ip-kamera/ — ориентир v2 16 800 ₽",
-        ),
-        (
-            "PTZ TRASSIR СТ-1 2 Мп ×20 (самая недорогая ×20)",
-            "TR-D6124IR10 v3 (R) 4.3-86",
-            49770,
-            "https://www.dssl.ru/products/tr-d6124ir10-v3-r-4-3-86-ip-kamera/ — ориентир v3 49 770 ₽",
+            "https://www.dssl.ru/products/tr-d2151ir3-v2-r-2-8-ip-kamera/",
         ),
         (
             "TRASSIR AnyIP (Astra Linux)",
