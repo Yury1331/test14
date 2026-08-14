@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ориентировочное КП: 2× NeuroStation Astra 9800R/128-S + 51× 4BHNN0-0-0-0."""
+"""Ориентировочное КП ред. 2: 2× NeuroStation + 1× 1143 + 49× 4MBIR-28-TMLW + 1× PTZ."""
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -43,7 +43,7 @@ ITEMS_REQUEST = [
         "name": (
             "IP-видеорегистратор TRASSIR NeuroStation Astra 9800R/128-S, "
             "128 каналов, Astra Linux SE «Смоленск», 8×HDD 3.5\" (диски не входят), "
-            "2 лицензии Neuro Detector в комплекте"
+            "2 лицензии Neuro Detector в комплекте. СТ-1 / реестры ПП №719 и №878"
         ),
         "sku": "NeuroStation 9800R/128-S",
         "unit": "шт.",
@@ -54,19 +54,43 @@ ITEMS_REQUEST = [
     {
         "no": 2,
         "name": (
-            "Камера видеонаблюдения цифровая 4 Мп, прошивка Nexus. "
-            "Артикул 4BHNN0-0-0-0 (производитель/корпус/объектив — подтвердить у НИЦ)"
+            "Купольная IP-камера 4 Мп НИЦ модель 1143, мотор 2.7–13.5 мм, ИК до 35 м, "
+            "IP66/IK10, ПО Nexus. Производство РФ, СТ-1 на партию"
         ),
-        "sku": "4BHNN0-0-0-0",
+        "sku": "4MP-DOM-2.7-13.5M Nexus",
         "unit": "шт.",
-        "qty": 51,
-        "price": 22000.00,
-        "note": "Ориентир опта НИЦ 4 Мп: 15–25 тыс. ₽; цена подлежит подтверждению",
+        "qty": 1,
+        "price": 23800.00,
+        "note": "Спецификация НИЦ PDF; ориентир цены 4MP-DOM-2.7-13.5M; СТ-1 запросить на партию",
+    },
+    {
+        "no": 3,
+        "name": (
+            "Уличная цилиндрическая IP-камера 4 Мп Mini Bullet, объектив 2.8 мм, "
+            "ИК + белый свет, микрофон. Производитель РУВЕР, СТ-1"
+        ),
+        "sku": "4MBIR-28-TMLW",
+        "unit": "шт.",
+        "qty": 49,
+        "price": 18500.00,
+        "note": "https://www.ipplus.ru/catalog/ip-kamery/ip-kamery-4mp/4mbir-28-tmlw ; st_1=true",
+    },
+    {
+        "no": 4,
+        "name": (
+            "PTZ уличная 2 Мп, зум ×20 (4.7–94 мм), IP66. Самая недорогая PTZ РУВЕР/Айпи Плюс "
+            "с СТ-1 в серии 2 Мп (×10 без СТ-1 не предлагаются)"
+        ),
+        "sku": "2BPBDD-4794-20",
+        "unit": "шт.",
+        "qty": 1,
+        "price": 92750.00,
+        "note": "https://www.ipplus.ru/catalog/ptz-kamery/ptz-kamery-2mp/2bpbdd-4794-20 ; реестр Минпромторга",
     },
 ]
 
 ITEM_ANYIP = {
-    "no": 3,
+    "no": 5,
     "name": "Лицензия TRASSIR AnyIP (TRASSIR OS) — подключение 1 IP-камеры любого производителя",
     "sku": "DSSL 57885",
     "unit": "шт.",
@@ -76,17 +100,17 @@ ITEM_ANYIP = {
 }
 
 ITEM_HDD = {
-    "no": 4,
+    "no": 6,
     "name": "HDD 10 ТБ Seagate SkyHawk AI, 3.5\" SATA, рекомендован DSSL для NeuroStation 8-disk",
     "sku": "ST10000VE001",
     "unit": "шт.",
     "qty": 8,
     "price": 55200.00,
-    "note": "Ориентир ANDPRO; ~30 суток архива при 51×4 Мп / 3 Мбит/с",
+    "note": "Ориентир ANDPRO; ~30 суток архива при 51 камере / 3 Мбит/с",
 }
 
 ITEM_ND = {
-    "no": 5,
+    "no": 7,
     "name": "TRASSIR Neuro Detector — доп. каналы (в 2 NVR уже 4 лицензии)",
     "sku": "DSSL 26363",
     "unit": "шт.",
@@ -205,8 +229,8 @@ def build_kp_sheet(ws):
 
     ws.merge_cells("A2:I2")
     ws["A2"] = (
-        f"№ {KP_NO} от {DATE}  ·  Поставка видеорегистраторов TRASSIR и цифровых камер  ·  "
-        f"Цены с НДС 22%, ориентир открытого рынка, не оферта"
+        f"№ {KP_NO} ред. 2 от {DATE}  ·  2× NVR TRASSIR + 1× НИЦ 1143 + 49× 4MBIR-28-TMLW + 1× PTZ  "
+        f"·  все камеры со СТ-1  ·  цены с НДС 22%"
     )
     ws["A2"].font = Font(name="Calibri", size=10, italic=True, color=WHITE)
     ws["A2"].fill = PatternFill("solid", fgColor=NAVY2)
@@ -218,9 +242,9 @@ def build_kp_sheet(ws):
     meta = [
         ("Заказчик", "______________________________"),
         ("ИНН / КПП заказчика", "______________________________"),
-        ("Поставщик", "к заполнению (ориентир: дилеры TRASSIR / DSSL, НИЦ «Технологии»)"),
+        ("Поставщик", "к заполнению (DSSL / TRASSIR, НИЦ «Технологии», ООО «Айпи Плюс» / РУВЕР)"),
         ("Срок действия цен", VALID_UNTIL),
-        ("Срок поставки", "NVR: 5–15 раб. дней при наличии; камеры НИЦ — под заказ"),
+        ("Срок поставки", "NVR: 5–15 раб. дней при наличии; камеры НИЦ и РУВЕР — под заказ"),
         ("Условия оплаты", "по договору (типовой ориентир: 100% предоплата или 70/30)"),
     ]
     r = 4
@@ -259,71 +283,72 @@ def build_kp_sheet(ws):
     ws.row_dimensions[12].height = 28
 
     request_items = [enrich(x) for x in ITEMS_REQUEST]
-    write_item_row(ws, 13, request_items[0], GRAY)
-    write_item_row(ws, 14, request_items[1], WHITE)
+    fills = [GRAY, WHITE, GRAY, WHITE]
+    for i, item in enumerate(request_items):
+        write_item_row(ws, 13 + i, item, fills[i])
     request_sum = money(sum(x["sum"] for x in request_items))
-    totals_block(ws, 15, "Итого по запросу (позиции 1–2)", request_sum, NAVY)
+    totals_block(ws, 17, "Итого по запросу (позиции 1–4), камеры 51 шт. со СТ-1", request_sum, NAVY)
 
-    ws.merge_cells("A17:I17")
-    ws["A17"] = (
+    ws.merge_cells("A19:I19")
+    ws["A19"] = (
         "2. Обязательно к поставке для работоспособности "
-        "(в регистраторе нет лицензий на IP-камеры; камеры не native TRASSIR)"
+        "(в регистраторе нет лицензий на IP-камеры; камеры НИЦ/РУВЕР не native TRASSIR)"
     )
-    ws["A17"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A17"].fill = PatternFill("solid", fgColor=NAVY)
+    ws["A19"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    ws["A19"].fill = PatternFill("solid", fgColor=NAVY)
     for col in range(1, 10):
-        ws.cell(17, col).fill = PatternFill("solid", fgColor=NAVY)
-    ws.row_dimensions[17].height = 20
+        ws.cell(19, col).fill = PatternFill("solid", fgColor=NAVY)
+    ws.row_dimensions[19].height = 20
 
     for col, h in enumerate(headers, 1):
-        header_cell(ws, 18, col, h)
+        header_cell(ws, 20, col, h)
     anyip = enrich(ITEM_ANYIP)
-    write_item_row(ws, 19, anyip, GOLD)
+    write_item_row(ws, 21, anyip, GOLD)
     work_sum = money(request_sum + anyip["sum"])
-    totals_block(ws, 20, "Итого работоспособный минимум (позиции 1–3)", work_sum, "375623")
+    totals_block(ws, 22, "Итого работоспособный минимум (позиции 1–5)", work_sum, "375623")
 
-    ws.merge_cells("A22:I22")
-    ws["A22"] = "3. Рекомендуемые опции (в исходном запросе отсутствуют)"
-    ws["A22"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A22"].fill = PatternFill("solid", fgColor=NAVY)
+    ws.merge_cells("A24:I24")
+    ws["A24"] = "3. Рекомендуемые опции (в исходном запросе отсутствуют)"
+    ws["A24"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    ws["A24"].fill = PatternFill("solid", fgColor=NAVY)
     for col in range(1, 10):
-        ws.cell(22, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(24, col).fill = PatternFill("solid", fgColor=NAVY)
 
     for col, h in enumerate(headers, 1):
-        header_cell(ws, 23, col, h)
+        header_cell(ws, 25, col, h)
     hdd = enrich(ITEM_HDD)
     nd = enrich(ITEM_ND)
-    write_item_row(ws, 24, hdd, GREEN)
-    write_item_row(ws, 25, nd, ORANGE)
+    write_item_row(ws, 26, hdd, GREEN)
+    write_item_row(ws, 27, nd, ORANGE)
 
     archive_sum = money(work_sum + hdd["sum"])
     full_sum = money(archive_sum + nd["sum"])
-    totals_block(ws, 26, "Итого с архивом ~30 суток (позиции 1–4)", archive_sum, "548235")
-    totals_block(ws, 27, "Итого полный комплект с аналитикой (позиции 1–5)", full_sum, NAVY)
+    totals_block(ws, 28, "Итого с архивом ~30 суток (позиции 1–6)", archive_sum, "548235")
+    totals_block(ws, 29, "Итого полный комплект с аналитикой (позиции 1–7)", full_sum, NAVY)
 
-    ws.merge_cells("A29:I29")
-    ws["A29"] = "4. Сводка комплектов"
-    ws["A29"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A29"].fill = PatternFill("solid", fgColor=NAVY)
+    ws.merge_cells("A31:I31")
+    ws["A31"] = "4. Сводка комплектов"
+    ws["A31"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    ws["A31"].fill = PatternFill("solid", fgColor=NAVY)
     for col in range(1, 10):
-        ws.cell(29, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(31, col).fill = PatternFill("solid", fgColor=NAVY)
 
     summary_headers = ["Комплект", "Состав", "Сумма с НДС, ₽", "в т.ч. НДС 22%, ₽", "Без НДС, ₽"]
     for col, h in enumerate(summary_headers, 1):
-        header_cell(ws, 30, col, h)
-    ws.merge_cells("E30:I30")
+        header_cell(ws, 32, col, h)
+    ws.merge_cells("E32:I32")
     for col in range(5, 10):
-        ws.cell(30, col).fill = PatternFill("solid", fgColor=NAVY)
-        ws.cell(30, col).border = THIN
+        ws.cell(32, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(32, col).border = THIN
 
     packs = [
-        ("А. Только запрошенные позиции", "2 NVR + 51 камера", request_sum, LIGHT),
+        ("А. Только запрошенные позиции", "2 NVR + 1 купол + 49 цилиндр + 1 PTZ", request_sum, LIGHT),
         ("Б. Работоспособный минимум", "А + 51× AnyIP", work_sum, GOLD),
         ("В. С архивом 30 суток", "Б + 8× HDD 10 ТБ", archive_sum, GREEN),
         ("Г. Полный комплект", "В + Neuro Detector на все камеры", full_sum, ORANGE),
     ]
     for i, (name, composition, gross, fill) in enumerate(packs):
-        row = 31 + i
+        row = 33 + i
         ws.merge_cells(start_row=row, start_column=5, end_row=row, end_column=9)
         ws.cell(row, 1, name).font = Font(name="Calibri", size=10, bold=True)
         ws.cell(row, 2, composition).font = Font(name="Calibri", size=10)
@@ -340,49 +365,48 @@ def build_kp_sheet(ws):
 
     notes = [
         "5. Условия и оговорки",
-        "• Документ — ориентировочный расчёт по открытым ценам на 14.08.2026, не является офертой. Фиксация — в КП DSSL/дилера TRASSIR и НИЦ.",
-        "• Регистратор поставляется без HDD и без лицензий на подключение IP-камер. В каждом NVR — 2 лицензии Neuro Detector.",
-        "• Артикул камеры 4BHNN0-0-0-0 в публичных каталогах не найден; по коду — 4 Мп НИЦ «Технологии», прошивка Nexus, базовая комплектация. Корпус и объектив подтвердить до заказа.",
-        "• Два NVR на 51 камеру: запас каналов 256 vs 51 (резерв, два объекта или расширение). Запись можно вести на одном регистраторе.",
-        "• Оценка архива: 51×4 Мп, H.265, 3 Мбит/с ≈ 1,65 ТБ/сутки; 8×10 ТБ достаточно примерно на 30 суток на одном NVR.",
+        "• Документ — ориентировочный расчёт по открытым ценам на 14.08.2026, ред. 2. Не оферта. Фиксация — в КП DSSL, НИЦ и ООО «Айпи Плюс».",
+        "• Все камеры поставляются со СТ-1 (и/или номером реестровой записи РЭП). 4MBIR-28-TMLW и 2BPBDD-4794-20: флаг СТ-1 в каталоге IP Plus.",
+        "• PTZ: взята самая недорогая модель РУВЕР 2 Мп с СТ-1 — 2BPBDD-4794-20 (зум ×20). Модели ×10 в каталоге без СТ-1 не включены.",
+        "• Регистратор без HDD и без лицензий AnyIP. В каждом NVR — 2 лицензии Neuro Detector.",
+        "• Оценка архива: 51 камера, H.265, 3 Мбит/с ≈ 1,65 ТБ/сутки; 8×10 ТБ ≈ 30 суток на одном NVR.",
         "• Не включено: PoE-коммутаторы, СКС, шкаф 19\", ИБП, мониторы, монтаж, ПНР, доставка.",
-        "• Гарантия TRASSIR — по паспорту (типично 3–5 лет на NVR). Камеры НИЦ — уточняется (часто 3 года).",
-        "• Контакты: DSSL 8 (800) 100-91-12, dssl.ru, код NVR 80222; НИЦ nic-tech.ru, 8 (800) 555-47-65.",
+        "• Контакты: DSSL 8 (800) 100-91-12; НИЦ 8 (800) 555-47-65; Айпи Плюс 8 804 333-73-02, info@ipplus.ru.",
     ]
-    ws.merge_cells("A36:I36")
-    ws["A36"] = notes[0]
-    ws["A36"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
-    ws["A36"].fill = PatternFill("solid", fgColor=NAVY)
+    ws.merge_cells("A38:I38")
+    ws["A38"] = notes[0]
+    ws["A38"].font = Font(name="Calibri", size=12, bold=True, color=WHITE)
+    ws["A38"].fill = PatternFill("solid", fgColor=NAVY)
     for col in range(1, 10):
-        ws.cell(36, col).fill = PatternFill("solid", fgColor=NAVY)
+        ws.cell(38, col).fill = PatternFill("solid", fgColor=NAVY)
 
-    for i, text in enumerate(notes[1:], 37):
+    for i, text in enumerate(notes[1:], 39):
         ws.merge_cells(start_row=i, start_column=1, end_row=i, end_column=9)
         cell = ws.cell(i, 1, text)
-        cell.font = Font(name="Calibri", size=9, color=RED_NOTE if i == 39 else "000000")
+        cell.font = Font(name="Calibri", size=9, color=RED_NOTE if i in (40, 41) else "000000")
         cell.alignment = Alignment(wrap_text=True, vertical="center")
         ws.row_dimensions[i].height = 18
 
-    ws.merge_cells("A46:D46")
-    ws["A46"] = "Поставщик / исполнитель"
-    ws["A46"].font = Font(name="Calibri", size=10, bold=True)
-    ws.merge_cells("F46:I46")
-    ws["F46"] = "Заказчик"
-    ws["F46"].font = Font(name="Calibri", size=10, bold=True)
     ws.merge_cells("A48:D48")
-    ws["A48"] = "________________ / ________________"
+    ws["A48"] = "Поставщик / исполнитель"
+    ws["A48"].font = Font(name="Calibri", size=10, bold=True)
     ws.merge_cells("F48:I48")
-    ws["F48"] = "________________ / ________________"
-    ws.merge_cells("A49:D49")
-    ws["A49"] = "подпись, ФИО, дата"
-    ws["A49"].font = Font(name="Calibri", size=8, italic=True, color="808080")
-    ws.merge_cells("F49:I49")
-    ws["F49"] = "подпись, ФИО, дата"
-    ws["F49"].font = Font(name="Calibri", size=8, italic=True, color="808080")
+    ws["F48"] = "Заказчик"
+    ws["F48"].font = Font(name="Calibri", size=10, bold=True)
+    ws.merge_cells("A50:D50")
+    ws["A50"] = "________________ / ________________"
+    ws.merge_cells("F50:I50")
+    ws["F50"] = "________________ / ________________"
+    ws.merge_cells("A51:D51")
+    ws["A51"] = "подпись, ФИО, дата"
+    ws["A51"].font = Font(name="Calibri", size=8, italic=True, color="808080")
+    ws.merge_cells("F51:I51")
+    ws["F51"] = "подпись, ФИО, дата"
+    ws["F51"].font = Font(name="Calibri", size=8, italic=True, color="808080")
 
-    ws.auto_filter.ref = "A12:I14"
+    ws.auto_filter.ref = "A12:I16"
     ws.freeze_panes = "A13"
-    ws.print_area = "A1:I49"
+    ws.print_area = "A1:I51"
     ws.oddHeader.left.text = f"КП {KP_NO}"
     ws.oddFooter.center.text = "Страница &P из &N · ориентировочный расчёт · цены с НДС 22%"
 
@@ -432,10 +456,22 @@ def build_sources_sheet(ws):
             "https://www.dssl.ru/products/trassir-neurostation-98128r-s-ip-videoregistrator/",
         ),
         (
-            "Камера 4 Мп НИЦ (ориентир опта)",
-            "4BHNN0-0-0-0 / NIC-4-BUL-Moto-RUS",
-            22000,
-            "https://tonzar.com — диапазон 15 000–25 000 ₽, в КП середина 22 000 ₽",
+            "Купол НИЦ 1143 4MP-DOM-2.7-13.5M Nexus",
+            "4MP-DOM-2.7-13.5M",
+            23800,
+            "https://www.nic-tech.ru/upload/iblock/094/ — спецификация модель 1143",
+        ),
+        (
+            "Цилиндр РУВЕР 4 Мп Mini Bullet СТ-1",
+            "4MBIR-28-TMLW",
+            18500,
+            "https://www.ipplus.ru/catalog/ip-kamery/ip-kamery-4mp/4mbir-28-tmlw (цена на сайте не опубликована)",
+        ),
+        (
+            "PTZ РУВЕР 2 Мп ×20 СТ-1 (самая недорогая с СТ-1)",
+            "2BPBDD-4794-20",
+            92750,
+            "https://www.ipplus.ru/catalog/ptz-kamery/ptz-kamery-2mp/2bpbdd-4794-20 ; ориентир класса PTZ20-20x",
         ),
         (
             "TRASSIR AnyIP",
