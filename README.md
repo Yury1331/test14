@@ -21,3 +21,4 @@ test14/
 | [cameras/trassir/TR-D3153IR2-v2-R/](cameras/trassir/TR-D3153IR2-v2-R/) | Купол СТ-1, аналог НИЦ 1143 |
 | [cameras/trassir/TR-D2151IR3-v2-R/](cameras/trassir/TR-D2151IR3-v2-R/) | Цилиндр СТ-1, аналог 4MBIR-28-TMLW |
 | [cameras/trassir/TR-D6124IR10-v3-R/](cameras/trassir/TR-D6124IR10-v3-R/) | PTZ СТ-1 ×20 |
+| [cameras/trassir/TR-D6254/](cameras/trassir/TR-D6254/) | PTZ 5 Мп ×32; аналоги АйТек ПРО IPr-PTZ / Сокол-PTZ 33x 5Mp |
