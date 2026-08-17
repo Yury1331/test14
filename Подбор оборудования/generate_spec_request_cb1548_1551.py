@@ -141,7 +141,10 @@ def main():
     for i, w in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(i)].width = w
 
-    out = "/workspace/Подбор оборудования/спецификация-запрос-цб-1548-1551.xlsx"
+    out_dir = "/workspace/Тендер 62 млн"
+    import os
+    os.makedirs(out_dir, exist_ok=True)
+    out = os.path.join(out_dir, "спецификация-запрос-цб-1548-1551.xlsx")
     wb.save(out)
     print(f"Saved: {out}")
     print(f"Total without VAT: {total:,.2f}")
