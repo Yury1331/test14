@@ -1,0 +1,375 @@
+#!/usr/bin/env python3
+"""Generate Excel registry of 44-FZ procurement lots with zakupki.gov.ru links."""
+
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+BASE = "https://zakupki.gov.ru/epz/order/notice"
+SEARCH = "https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="
+
+
+def link(notice_type: str, reg: str) -> str:
+    return f"{BASE}/{notice_type}/view/common-info.html?regNumber={reg}"
+
+
+LOTS = [
+    # РО — пешеходные переходы
+    {
+        "region_scope": "Ростовская область",
+        "category": "Пешеходные переходы",
+        "reg": "0158300010126000011",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": "Администрация Ремонтненского района РО",
+        "subject": "Замена светофоров Т.7 (с солнечными светильниками) на пешеходных переходах МО дорог",
+        "nmck": 1840797,
+        "contract_price": 984826,
+        "status": "Контракт заключён 10.08.2026",
+        "platform": "РТС-тендер",
+        "deadline": "27.07.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Пешеходные переходы",
+        "reg": "0358300284526000125",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'МКУ "ДИСОТИ" (дирекция транспортной инфраструктуры г. Ростова-на-Дону)',
+        "subject": "Капремонт подземного перехода Кировский / Б. Садовая (ОКН, мозаика, видеонаблюдение)",
+        "nmck": 48134495,
+        "contract_price": 46700000,
+        "status": "Повторный контракт 07.2026 (~46,7 млн ₽); ранее аукцион 05.2026",
+        "platform": "Сбербанк-АСТ",
+        "deadline": "27.05.2026",
+    },
+    # РО — видеонаблюдение / фотовидеофиксация
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0858200000426000003",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'ГКУ РО "Центр безопасности дорожного движения"',
+        "subject": "Услуги связи (VPN, передача данных с комплексов фиксации нарушений ПДД на территории РО)",
+        "nmck": 10298296,
+        "contract_price": 10298296,
+        "status": "Контракт с ПАО «МегаФон» 16.02.2026",
+        "platform": "РТС-тендер",
+        "deadline": "03.02.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0858200000426000013",
+        "type": "zcp20",
+        "procedure": "Запрос ценовой информации",
+        "customer": 'ГКУ РО "Центр безопасности дорожного движения"',
+        "subject": "Гос. метрологическая поверка комплексов фотовидеофиксации нарушений ПДД (61 комплекс)",
+        "nmck": None,
+        "contract_price": None,
+        "status": "Завершена 04.2026",
+        "platform": "ЕИС",
+        "deadline": "10.04.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0858200000426000014",
+        "type": "zk20",
+        "procedure": "Запрос котировок",
+        "customer": 'ГКУ РО "Центр безопасности дорожного движения"',
+        "subject": "Модернизация комплексов «СКИП-Траффик ПДД» (доп. виды нарушений), 9 комплексов",
+        "nmck": 2655000,
+        "contract_price": 2655000,
+        "status": "Контракт 22.06.2026",
+        "platform": "РТС-тендер",
+        "deadline": "16.06.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0858200000426000006",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'ГКУ РО "Центр безопасности дорожного движения"',
+        "subject": "ИБ ГИС «Интеллектуальная транспортная система Ростовской области» (ОКИИ)",
+        "nmck": None,
+        "contract_price": None,
+        "status": "Завершена 04.2026",
+        "platform": "РТС-тендер",
+        "deadline": "06.04.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "2616712165226000005",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'ГКУ РО "Центр безопасности дорожного движения"',
+        "subject": "Поставка электроэнергии для комплексов фиксации",
+        "nmck": 3500000,
+        "contract_price": 3500000,
+        "status": "Контракт 04.2026",
+        "platform": "ЕИС",
+        "deadline": "07.04.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0358300436226000021",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'МКУ "Защита и безопасность" (г. Ростов-на-Дону)',
+        "subject": "Поставка камер видеонаблюдения цилиндрических, 47 шт.",
+        "nmck": 1410000,
+        "contract_price": 1410000,
+        "status": "Завершена 05.2026",
+        "platform": "Сбербанк-АСТ",
+        "deadline": "06.05.2026",
+    },
+    {
+        "region_scope": "Ростовская область",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0358300436226000022",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'МКУ "Защита и безопасность" (г. Ростов-на-Дону)',
+        "subject": "Мультимедийное ПО системы видеонаблюдения (лицензии)",
+        "nmck": 2600000,
+        "contract_price": None,
+        "status": "Размещена 04.2026",
+        "platform": "Сбербанк-АСТ",
+        "deadline": "—",
+    },
+    # РФ — пешеходные переходы
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0311100007226000004",
+        "type": "ok20",
+        "procedure": "Открытый конкурс (ЭОК)",
+        "customer": 'ФКУ "Упрдор Волга" (Росавтодор)',
+        "subject": "Модульные надземные переходы, М-7 «Волга», 3 точки (км 659+086, 661+289, 665+613), Чувашия",
+        "nmck": 138000000,
+        "contract_price": 138000000,
+        "status": "Завершена 03.2026; победитель ООО «Вест»",
+        "platform": "Фабрикант",
+        "deadline": "06.03.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0311100007226000003",
+        "type": "ok20",
+        "procedure": "Открытый конкурс (ЭОК)",
+        "customer": 'ФКУ "Упрдор Волга" (Росавтодор)',
+        "subject": "Модульные надземные переходы, М-7 «Волга», 3 точки (км 626+954, 632+373, 634+365), Чувашия",
+        "nmck": 138000000,
+        "contract_price": None,
+        "status": "Завершена 03.2026",
+        "platform": "Фабрикант",
+        "deadline": "06.03.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0311100007226000002",
+        "type": "ok20",
+        "procedure": "Открытый конкурс (ЭОК)",
+        "customer": 'ФКУ "Упрдор Волга" (Росавтодор)',
+        "subject": "Модульные надземные переходы, М-7 «Волга», 3 точки (км 622+767, 624+812, 635+693), Чувашия",
+        "nmck": 138000000,
+        "contract_price": None,
+        "status": "Завершена 03.2026",
+        "platform": "Фабрикант",
+        "deadline": "06.03.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0362100008225000034",
+        "type": "ok20",
+        "procedure": "Открытый конкурс (ЭОК)",
+        "customer": 'ФКУ "Упрдор Урал" (Росавтодор)',
+        "subject": "Модульные пешеходные переходы на федеральных дорогах Свердловской области (Р-242 и др.)",
+        "nmck": None,
+        "contract_price": None,
+        "status": "Завершена 09.2025",
+        "platform": "РАД",
+        "deadline": "03.09.2025",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0311100007226000071",
+        "type": "zcp20",
+        "procedure": "Запрос ценовой информации",
+        "customer": 'ФКУ "Упрдор Поволжье" (Росавтодор)',
+        "subject": "Модульный надземный переход, Р-158, км 38+700, Нижегородская обл.",
+        "nmck": None,
+        "contract_price": None,
+        "status": "Завершена 06.2026",
+        "platform": "ЕИС",
+        "deadline": "18.06.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0351100008926000135",
+        "type": "ok20",
+        "procedure": "Открытый конкурс (ЭОК)",
+        "customer": 'ФКУ "Упрдор Сибирь" (Росавтодор)',
+        "subject": "Светофорный объект на пешеходном переходе (кнопка вызова), А-166 «Чуйский тракт», км 442+988",
+        "nmck": 7714064,
+        "contract_price": None,
+        "status": "Приём заявок до 08.2026",
+        "platform": "ЕИС",
+        "deadline": "11.08.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Пешеходные переходы",
+        "reg": "0813500000126014575",
+        "type": "zk20",
+        "procedure": "Запрос котировок",
+        "customer": "Управление «Шабердинское-Люкское» (Завьяловский МО, Удмуртия)",
+        "subject": "Установка светофора пешеходного перехода",
+        "nmck": 204004,
+        "contract_price": None,
+        "status": "Приём заявок до 08.2026",
+        "platform": "ЕИС",
+        "deadline": "04.08.2026",
+    },
+    # РФ — видеонаблюдение / фотовидеофиксация (в т.ч. у пешеходных переходов)
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0118300013326000359",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'МБУ "АПК Безопасный город-ЕДДС" (г. Новороссийск)',
+        "subject": "Расширение функционала интеллектуальных модулей муниципальной системы видеонаблюдения",
+        "nmck": 19750333,
+        "contract_price": 19750333,
+        "status": "Контракт с ООО «Городские технологии» 20.04.2026",
+        "platform": "ТЭК-Торг",
+        "deadline": "06.04.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0869200000226002435",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'ГКУ Челябинской области "Центр организации закупок"',
+        "subject": "Развитие АС фотовидеофиксации «Безопасный регион» у пешеходного перехода, ул. Горького / Правдухина, Челябинск",
+        "nmck": 5800000,
+        "contract_price": None,
+        "status": "Аукцион 04.2026",
+        "platform": "ТЭК-Торг",
+        "deadline": "03.04.2026",
+    },
+    {
+        "region_scope": "Россия (федеральные/региональные)",
+        "category": "Видеонаблюдение / фотовидеофиксация",
+        "reg": "0311100007226000015",
+        "type": "ea20",
+        "procedure": "Электронный аукцион",
+        "customer": 'ФКУ "Упрдор Волга" (Росавтодор)',
+        "subject": "Установка светофорных объектов на федеральных дорогах (в т.ч. пешеходные переходы), Чувашия",
+        "nmck": 15441990,
+        "contract_price": None,
+        "status": "Размещена 04.2026",
+        "platform": "ЕИС",
+        "deadline": "—",
+    },
+]
+
+HEADERS = [
+    "№",
+    "Охват",
+    "Категория",
+    "№ закупки (ЕИС)",
+    "Способ определения",
+    "Заказчик",
+    "Предмет закупки",
+    "НМЦК, ₽",
+    "Цена контракта, ₽",
+    "Статус",
+    "ЭТП",
+    "Окончание заявок",
+    "Ссылка ЕИС",
+    "Поиск в ЕИС",
+]
+
+
+def fmt_money(value):
+    if value is None:
+        return "—"
+    return value
+
+
+def build_workbook():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Реестр лотов"
+
+    header_fill = PatternFill("solid", fgColor="1F4E79")
+    header_font = Font(color="FFFFFF", bold=True)
+
+    ws.append(HEADERS)
+    for col in range(1, len(HEADERS) + 1):
+        cell = ws.cell(row=1, column=col)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(wrap_text=True, vertical="center", horizontal="center")
+
+    for i, lot in enumerate(LOTS, start=1):
+        reg = lot["reg"]
+        url = link(lot["type"], reg)
+        search_url = SEARCH + reg
+        row = [
+            i,
+            lot["region_scope"],
+            lot["category"],
+            reg,
+            lot["procedure"],
+            lot["customer"],
+            lot["subject"],
+            fmt_money(lot["nmck"]),
+            fmt_money(lot["contract_price"]),
+            lot["status"],
+            lot["platform"],
+            lot["deadline"],
+            url,
+            search_url,
+        ]
+        ws.append(row)
+        r = ws.max_row
+        link_cell = ws.cell(row=r, column=13)
+        link_cell.hyperlink = url
+        link_cell.value = url
+        link_cell.font = Font(color="0563C1", underline="single")
+        search_cell = ws.cell(row=r, column=14)
+        search_cell.hyperlink = search_url
+        search_cell.value = search_url
+        search_cell.font = Font(color="0563C1", underline="single")
+
+    widths = [5, 22, 28, 22, 22, 34, 52, 14, 14, 28, 16, 14, 50, 50]
+    for idx, width in enumerate(widths, start=1):
+        ws.column_dimensions[get_column_letter(idx)].width = width
+
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
+        for cell in row:
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = ws.dimensions
+    return wb
+
+
+if __name__ == "__main__":
+    out = "/workspace/Общая Тендеры РНД/реестр-лотов-44фз-пешеходные-переходы-видеонаблюдение.xlsx"
+    build_workbook().save(out)
+    print(f"Saved: {out} ({len(LOTS)} lots)")
