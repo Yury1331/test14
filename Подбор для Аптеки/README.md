@@ -7,6 +7,13 @@
 
 ## Скачать комплект
 
+- **Вся папка:** https://github.com/Yury1331/test14/tree/cursor/apteka-podbor-ba12/Подбор%20для%20Аптеки
+- **ZIP всей ветки:** https://github.com/Yury1331/test14/archive/refs/heads/cursor/apteka-podbor-ba12.zip
+- **PDF КП:** https://github.com/Yury1331/test14/raw/cursor/apteka-podbor-ba12/Подбор%20для%20Аптеки/КП_Аптека_2026-08-18.pdf
+- **Excel:** https://github.com/Yury1331/test14/raw/cursor/apteka-podbor-ba12/Подбор%20для%20Аптеки/КП_Аптека_2026-08-18.xlsx
+- **Word:** https://github.com/Yury1331/test14/raw/cursor/apteka-podbor-ba12/Подбор%20для%20Аптеки/КП_Аптека_2026-08-18.docx
+- **Pull request:** https://github.com/Yury1331/test14/pull/13
+
 | Файл | Назначение |
 |---|---|
 | [КП_Аптека_2026-08-18.pdf](КП_Аптека_2026-08-18.pdf) | КП + краткие расчёты, для печати |
@@ -15,6 +22,7 @@
 | [КП_Аптека_2026-08-18.md](КП_Аптека_2026-08-18.md) | Текст КП |
 | [Анализ_исходного_КП.md](Анализ_исходного_КП.md) | Разбор исходного комплекта |
 | [Расчёт_архива_и_питания.md](Расчёт_архива_и_питания.md) | HDD 60 суток, мощность, шкаф |
+| [Исходное_КП.pdf](Исходное_КП.pdf) | Исходное КП Эффорт Юг (для сравнения) |
 
 ## Состав поставки
 
