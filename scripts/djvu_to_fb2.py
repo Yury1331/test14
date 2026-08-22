@@ -11,7 +11,7 @@ DJVU = Path(
     "/home/ubuntu/.cursor/projects/workspace/uploads/"
     "_______._._-_________________________________________-_1980_235b.djvu"
 )
-OUTPUT = Path("/workspace/Manin_Vychislimoe_i_nevychislimoe_1980.fb2")
+OUTPUT = Path("/workspace/Convert/Manin_Vychislimoe_i_nevychislimoe_1980.fb2")
 PAGE_OFFSET = 2  # book_page = djvu_page - PAGE_OFFSET
 
 STRUCTURE = [
